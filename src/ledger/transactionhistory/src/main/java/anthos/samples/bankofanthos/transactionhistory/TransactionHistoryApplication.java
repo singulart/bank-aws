@@ -16,12 +16,10 @@
 
 package anthos.samples.bankofanthos.transactionhistory;
 
-import com.google.cloud.MetadataConfig;
 import io.micrometer.stackdriver.StackdriverConfig;
 import io.micrometer.stackdriver.StackdriverMeterRegistry;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PreDestroy;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -67,7 +65,6 @@ public class TransactionHistoryApplication {
                 + "Log level is: %s", LOGGER.getLevel().toString()));
     }
 
-    @PreDestroy
     public void destroy() {
         LOGGER.info("TransactionHistory service shutting down");
     }
@@ -98,11 +95,7 @@ public class TransactionHistoryApplication {
 
             @Override
             public String projectId() {
-                String id = MetadataConfig.getProjectId();
-                if (id == null) {
-                    id = "";
-                }
-                return id;
+                return "argorand-banking-demo";
             }
 
             @Override
@@ -120,10 +113,8 @@ public class TransactionHistoryApplication {
                 String podName = System.getenv("HOSTNAME");
                 String containerName = podName.substring(0,
                     podName.indexOf("-"));
-                map.put("location", MetadataConfig.getZone());
                 map.put("container_name", containerName);
                 map.put("pod_name", podName);
-                map.put("cluster_name", MetadataConfig.getClusterName());
                 map.put("namespace_name", System.getenv("NAMESPACE"));
                 return map;
             }

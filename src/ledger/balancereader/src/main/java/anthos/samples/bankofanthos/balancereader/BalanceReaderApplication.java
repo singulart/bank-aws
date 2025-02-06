@@ -16,12 +16,10 @@
 
 package anthos.samples.bankofanthos.balancereader;
 
-import com.google.cloud.MetadataConfig;
 import io.micrometer.stackdriver.StackdriverConfig;
 import io.micrometer.stackdriver.StackdriverMeterRegistry;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PreDestroy;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -68,7 +66,6 @@ public class BalanceReaderApplication {
 
     }
 
-    @PreDestroy
     public void destroy() {
         LOGGER.info("BalanceReader service shutting down");
     }
@@ -98,11 +95,12 @@ public class BalanceReaderApplication {
 
             @Override
             public String projectId() {
-                String id = MetadataConfig.getProjectId();
-                if (id == null) {
-                    id = "";
-                }
-                return id;
+                // String id = MetadataConfig.getProjectId();
+                // if (id == null) {
+                //     id = "";
+                // }
+                // return id;
+                return "argorand-banking-demo";
             }
 
             @Override
@@ -120,10 +118,10 @@ public class BalanceReaderApplication {
                 String podName = System.getenv("HOSTNAME");
                 String containerName = podName.substring(0,
                     podName.indexOf("-"));
-                map.put("location", MetadataConfig.getZone());
+//                map.put("location", MetadataConfig.getZone());
                 map.put("container_name", containerName);
                 map.put("pod_name", podName);
-                map.put("cluster_name", MetadataConfig.getClusterName());
+//                map.put("cluster_name", MetadataConfig.getClusterName());
                 map.put("namespace_name", System.getenv("NAMESPACE"));
                 return map;
             }

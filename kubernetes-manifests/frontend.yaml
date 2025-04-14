@@ -96,6 +96,14 @@ spec:
                   key: DEMO_OAUTH_REDIRECT_URI
                   name: oauth-config
                   optional: true
+            - name: AWS_LOG_GROUP
+              value: /aws/eks/bank-of-aws
+            - name: AWS_LOG_STREAM
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: SERVICE_NAME
+              value: frontend
           envFrom:
             - configMapRef:
                 name: environment-config

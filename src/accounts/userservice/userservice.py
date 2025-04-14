@@ -30,12 +30,13 @@ import bleach
 from sqlalchemy.exc import OperationalError, SQLAlchemyError
 
 from opentelemetry import trace
-from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.propagate import set_global_textmap
-from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
-from opentelemetry.propagators.cloud_trace_propagator import CloudTraceFormatPropagator
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
+from opentelemetry.instrumentation.jinja2 import Jinja2Instrumentor
+
 
 from db import UserDb
 
@@ -217,21 +218,22 @@ def create_app():
         app.logger.info("Stopping userservice.")
 
     # Set up logger
+    app.config["OTLP_ENDPOINT"] = 'http://{}/v1/traces'.format(
+        os.environ.get('OTLP_ENDPOINT'))
     app.logger.handlers = logging.getLogger('gunicorn.error').handlers
     app.logger.setLevel(logging.getLogger('gunicorn.error').level)
     app.logger.info('Starting userservice.')
 
-    # Set up tracing and export spans to Cloud Trace.
-    if os.environ['ENABLE_TRACING'] == "true":
+    if os.environ.get("ENABLE_TRACING", "false") == "true":
         app.logger.info("✅ Tracing enabled.")
-        # Set up tracing and export spans to Cloud Trace
         trace.set_tracer_provider(TracerProvider())
-        cloud_trace_exporter = CloudTraceSpanExporter()
+        otlp_exporter = OTLPSpanExporter(endpoint=app.config["OTLP_ENDPOINT"])
         trace.get_tracer_provider().add_span_processor(
-            BatchSpanProcessor(cloud_trace_exporter)
+            BatchSpanProcessor(otlp_exporter)
         )
-        set_global_textmap(CloudTraceFormatPropagator())
         FlaskInstrumentor().instrument_app(app)
+        RequestsInstrumentor().instrument()
+        Jinja2Instrumentor().instrument()
     else:
         app.logger.info("🚫 Tracing disabled.")
 

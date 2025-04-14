@@ -89,7 +89,7 @@ spec:
                 name: environment-config
             - configMapRef:
                 name: accounts-db-config
-          image: 794689098735.dkr.ecr.us-east-1.amazonaws.com/bank-aws/userservice:latest@sha256:e8b18a83a18d702a1c3f426b2db0769251645e977ec185ca9052d3e477cd6655
+          image: 794689098735.dkr.ecr.us-east-1.amazonaws.com/bank-aws/userservice:latest@sha256:8f7c9d2b0e6cccefae5c98e73259416881c02f4a44cf9d9d21bf7893edd7c7e7
           name: userservice
           ports:
             - containerPort: 8080

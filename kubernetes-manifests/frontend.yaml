@@ -101,7 +101,7 @@ spec:
                 name: environment-config
             - configMapRef:
                 name: service-api-config
-          image: 794689098735.dkr.ecr.us-east-1.amazonaws.com/bank-aws/frontend:latest@sha256:800e919388ed961a7d17b60277a591c39cf77c575b4a617985fcb483a43f5aaf
+          image: 794689098735.dkr.ecr.us-east-1.amazonaws.com/bank-aws/frontend:latest@sha256:6ecd1bc2d6eec75b04fd994bd3f2e106ccfa1b873176f497390544d6b03a4969
           livenessProbe:
             httpGet:
               path: /ready

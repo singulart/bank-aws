@@ -72,12 +72,22 @@ spec:
               value: "true"
             - name: LOG_LEVEL
               value: info
+            - name: AWS_LOG_GROUP
+              value: /aws/eks/bank-of-aws
+            - name: AWS_LOG_STREAM
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: SERVICE_NAME
+              value: contacts
           envFrom:
             - configMapRef:
                 name: environment-config
             - configMapRef:
                 name: accounts-db-config
-          image: 794689098735.dkr.ecr.us-east-1.amazonaws.com/bank-aws/contacts:latest@sha256:443e300321d7e67a3124a5b88705c827eca9dc65b728a054289fcd3d6b0cf5eb
+            - configMapRef:
+                name: service-api-config
+          image: 794689098735.dkr.ecr.us-east-1.amazonaws.com/bank-aws/contacts:latest@sha256:a4f4dad0730aa0c0a6d806d6dcffb6cf30904196228d46b19ca6a89ec8df2dc3
           name: contacts
           readinessProbe:
             httpGet:

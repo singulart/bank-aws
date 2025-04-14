@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: adot-collector
+  labels:
+    app: adot-collector
+spec:
+  selector:
+    matchLabels:
+      app: adot-collector
+  template:
+    metadata:
+      labels:
+        app: adot-collector
+    spec:
+      serviceAccountName: bank-of-aws
+      containers:
+        - name: adot-collector
+          image: "public.ecr.aws/aws-observability/aws-otel-collector:latest"
+          args: ["--config=/etc/otel/config.yaml"]
+          ports:
+            - containerPort: 4317  # OTLP gRPC
+              name: otlp-grpc
+            - containerPort: 4318  # OTLP HTTP
+              name: otlp-http
+          volumeMounts:
+            - name: adot-config
+              mountPath: /etc/otel/
+      volumes:
+        - name: adot-config
+          configMap:
+            name: adot-collector-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adot-collector
+spec:
+  selector:
+    app: adot-collector 
+  ports:
+    - name: otlp-http
+      port: 4318
+      targetPort: 4318
+    - name: otlp-grpc
+      port: 4317
+      targetPort: 4317
+  type: ClusterIP

@@ -16,7 +16,7 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    application: bank-of-anthos
+    application: bank-of-aws
     environment: development
     team: ledger
     tier: backend
@@ -28,7 +28,7 @@ spec:
       targetPort: 8080
   selector:
     app: balancereader
-    application: bank-of-anthos
+    application: bank-of-aws
     environment: development
     team: ledger
     tier: backend
@@ -38,7 +38,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    application: bank-of-anthos
+    application: bank-of-aws
     environment: development
     team: ledger
     tier: backend
@@ -47,7 +47,7 @@ spec:
   selector:
     matchLabels:
       app: balancereader
-      application: bank-of-anthos
+      application: bank-of-aws
       environment: development
       team: ledger
       tier: backend
@@ -57,7 +57,7 @@ spec:
         proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
       labels:
         app: balancereader
-        application: bank-of-anthos
+        application: bank-of-aws
         environment: development
         team: ledger
         tier: backend
@@ -89,7 +89,7 @@ spec:
                 name: environment-config
             - configMapRef:
                 name: ledger-db-config
-          image: us-central1-docker.pkg.dev/bank-of-anthos-ci/bank-of-anthos/balancereader:v0.6.6@sha256:cd9dee677105ac2a8310a624f774382d9b119887637a7e396f253f89aa70f2d5
+          image: 794689098735.dkr.ecr.us-east-1.amazonaws.com/bank-aws/balancereader:latest@sha256:737492263b5f413933fbf775865eaed8efde5cee8390b08def21b19a92f69501
           livenessProbe:
             httpGet:
               path: /healthy
@@ -138,7 +138,7 @@ spec:
         runAsGroup: 1000
         runAsNonRoot: true
         runAsUser: 1000
-      serviceAccountName: bank-of-anthos
+      serviceAccountName: bank-of-aws
       terminationGracePeriodSeconds: 5
       volumes:
         - emptyDir: {}

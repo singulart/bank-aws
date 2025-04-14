@@ -46,4 +46,4 @@ kind: ServiceAccount
 metadata:
   annotations:
     iam.gke.io/gcp-service-account: gke-workload-development@bank-of-anthos-ci.iam.gserviceaccount.com
-  name: bank-of-anthos
+  name: bank-of-aws

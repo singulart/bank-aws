@@ -84,12 +84,20 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: MANAGEMENT_OTLP_METRICS_EXPORT_URL
+              value: http://adot-collector:4318/v1/metrics
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://adot-collector:4318
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: http/protobuf
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.name=balancereader
           envFrom:
             - configMapRef:
                 name: environment-config
             - configMapRef:
                 name: ledger-db-config
-          image: 794689098735.dkr.ecr.us-east-1.amazonaws.com/bank-aws/balancereader:latest@sha256:737492263b5f413933fbf775865eaed8efde5cee8390b08def21b19a92f69501
+          image: 794689098735.dkr.ecr.us-east-1.amazonaws.com/bank-aws/balancereader:latest@sha256:ed76aff9fcb3598bf0ee0dc1890f9c5233536959bd4383df815ecfc127cafe5c
           livenessProbe:
             httpGet:
               path: /healthy

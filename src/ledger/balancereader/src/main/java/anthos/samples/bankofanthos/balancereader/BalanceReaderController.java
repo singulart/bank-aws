@@ -22,7 +22,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import io.micrometer.core.instrument.binder.cache.GuavaCacheMetrics;
-import io.micrometer.stackdriver.StackdriverMeterRegistry;
+import io.micrometer.registry.otlp.OtlpMeterRegistry;
 import java.util.concurrent.ExecutionException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,7 +63,7 @@ public final class BalanceReaderController {
     @Autowired
     public BalanceReaderController(LedgerReader reader,
         JWTVerifier verifier,
-        StackdriverMeterRegistry meterRegistry,
+        OtlpMeterRegistry meterRegistry,
         LoadingCache<String, Long> cache,
         @Value("${LOCAL_ROUTING_NUM}") final String localRoutingNum,
         @Value("${VERSION}") final String version) {

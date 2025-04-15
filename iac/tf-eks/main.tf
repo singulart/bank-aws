@@ -80,7 +80,8 @@ module "eks" {
       desired_size = 2
 
       iam_role_additional_policies = {
-        xray = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+        xray = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess",
+        cloud_watch = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
       }
     }
   }

@@ -43,7 +43,7 @@
             <dependency>
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-bom</artifactId>
-                <version>1.13.4</version>
+                <version>1.14.6</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -65,14 +65,18 @@
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-stackdriver</artifactId>
-            <version>1.13.4</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-classic</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>micrometer-registry-otlp</artifactId>
+            <version>1.14.6</version>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
+            <version>1.37.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-otlp</artifactId>
+            <version>1.37.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

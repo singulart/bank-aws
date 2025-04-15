@@ -16,10 +16,8 @@
 
 package anthos.samples.bankofanthos.ledgerwriter;
 
-import io.micrometer.stackdriver.StackdriverConfig;
-import io.micrometer.stackdriver.StackdriverMeterRegistry;
-import java.util.HashMap;
-import java.util.Map;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -76,54 +74,14 @@ public class LedgerWriterApplication {
         LOGGER.info("LedgerWriter service shutting down");
     }
 
+
     /**
-     * Initializes Meter Registry with custom Stackdriver configuration
+     * Initializes Meter Registry with custom OpenTelemetry configuration
      *
-     * @return the StackdriverMeterRegistry with configuration
+     * @return the OtlpMeterRegistry with configuration
      */
     @Bean
-    public static StackdriverMeterRegistry stackdriver() {
-
-        return StackdriverMeterRegistry.builder(new StackdriverConfig() {
-            @Override
-            public boolean enabled() {
-                boolean enableMetricsExport = true;
-
-                if (System.getenv("ENABLE_METRICS") != null
-                    && System.getenv("ENABLE_METRICS").equals("false")) {
-                    enableMetricsExport = false;
-                }
-
-                LOGGER.info(String.format("Enable metrics export: %b",
-                    enableMetricsExport));
-                return enableMetricsExport;
-            }
-
-            @Override
-            public String projectId() {
-                return "argorand-banking-demo";
-            }
-
-            @Override
-            public String get(String key) {
-                return null;
-            }
-            @Override
-            public String resourceType() {
-                return "k8s_container";
-            }
-
-            @Override
-            public Map<String, String> resourceLabels() {
-                Map<String, String> map = new HashMap<>();
-                String podName = System.getenv("HOSTNAME");
-                String containerName = podName.substring(0,
-                    podName.indexOf("-"));
-                map.put("container_name", containerName);
-                map.put("pod_name", podName);
-                map.put("namespace_name", System.getenv("NAMESPACE"));
-                return map;
-            }
-        }).build();
+    AutoConfiguredOpenTelemetrySdk buildOpenTelemetry() {
+        return AutoConfiguredOpenTelemetrySdk.initialize();
     }
 }

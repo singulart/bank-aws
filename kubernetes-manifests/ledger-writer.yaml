@@ -80,6 +80,14 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: MANAGEMENT_OTLP_METRICS_EXPORT_URL
+              value: http://adot-collector:4318/v1/metrics
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://adot-collector:4318
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: http/protobuf
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.name=ledgerwriter
           envFrom:
             - configMapRef:
                 name: environment-config
@@ -87,7 +95,7 @@ spec:
                 name: service-api-config
             - configMapRef:
                 name: ledger-db-config
-          image: 794689098735.dkr.ecr.us-east-1.amazonaws.com/bank-aws/ledgerwriter:latest@sha256:e9a49d8a819a6e8792e2fd7011f3a7b239eecb9095cfd67c3319b2c5d3e8f22b
+          image: 794689098735.dkr.ecr.us-east-1.amazonaws.com/bank-aws/ledgerwriter:latest@sha256:eae66d33d6971d39cd6ce1a581e1250554b74702db5d2d825ca9c4d955b3e501
           name: ledgerwriter
           readinessProbe:
             httpGet:

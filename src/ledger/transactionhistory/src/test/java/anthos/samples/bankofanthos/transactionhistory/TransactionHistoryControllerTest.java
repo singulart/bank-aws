@@ -29,8 +29,9 @@ import com.google.common.cache.CacheStats;
 import com.google.common.cache.LoadingCache;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.lang.Nullable;
-import io.micrometer.stackdriver.StackdriverConfig;
-import io.micrometer.stackdriver.StackdriverMeterRegistry;
+import io.micrometer.registry.otlp.OtlpConfig;
+import io.micrometer.registry.otlp.OtlpMeterRegistry;
+
 import java.util.Deque;
 import java.util.concurrent.ExecutionException;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,15 +75,10 @@ class TransactionHistoryControllerTest {
     @BeforeEach
     void setUp() {
         initMocks(this);
-        StackdriverMeterRegistry meterRegistry = new StackdriverMeterRegistry(new StackdriverConfig() {
+        OtlpMeterRegistry meterRegistry = new OtlpMeterRegistry(new OtlpConfig() {
             @Override
             public boolean enabled() {
                 return false;
-            }
-
-            @Override
-            public String projectId() {
-                return "test";
             }
 
             @Override

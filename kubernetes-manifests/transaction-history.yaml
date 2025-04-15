@@ -88,12 +88,24 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: MANAGEMENT_OTLP_METRICS_EXPORT_URL
+              value: http://adot-collector:4318/v1/metrics
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://adot-collector:4318
+            - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+              value: http://adot-collector:4318/v1/traces
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: http/protobuf
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.name=transaction-history
+            - name: OTEL_LOGS_EXPORTER
+              value: none
           envFrom:
             - configMapRef:
                 name: environment-config
             - configMapRef:
                 name: ledger-db-config
-          image: 794689098735.dkr.ecr.us-east-1.amazonaws.com/bank-aws/transactionhistory:latest@sha256:beb5f049597a33a483883f6cb8824ac8bff96a7b57860c3307ec1df406724c50
+          image: 794689098735.dkr.ecr.us-east-1.amazonaws.com/bank-aws/transactionhistory:latest@sha256:45f48f71623c1934ebb0d56b556188e77f70d8d8df182124e3c6cd548823296e
           livenessProbe:
             httpGet:
               path: /healthy

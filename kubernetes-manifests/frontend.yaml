@@ -104,6 +104,8 @@ spec:
                   fieldPath: metadata.name
             - name: SERVICE_NAME
               value: frontend
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.name=frontend-app
           envFrom:
             - configMapRef:
                 name: environment-config

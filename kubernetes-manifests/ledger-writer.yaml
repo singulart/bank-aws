@@ -89,7 +89,7 @@ spec:
             - name: OTEL_EXPORTER_OTLP_PROTOCOL
               value: http/protobuf
             - name: OTEL_RESOURCE_ATTRIBUTES
-              value: service.name=ledgerwriter
+              value: service.name=ledgerwriter-app
             - name: OTEL_LOGS_EXPORTER
               value: none
           envFrom:

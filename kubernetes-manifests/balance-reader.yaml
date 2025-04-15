@@ -88,10 +88,14 @@ spec:
               value: http://adot-collector:4318/v1/metrics
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: http://adot-collector:4318
+            - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+              value: http://adot-collector:4318/v1/traces
             - name: OTEL_EXPORTER_OTLP_PROTOCOL
               value: http/protobuf
             - name: OTEL_RESOURCE_ATTRIBUTES
               value: service.name=balancereader
+            - name: OTEL_LOGS_EXPORTER
+              value: none
           envFrom:
             - configMapRef:
                 name: environment-config

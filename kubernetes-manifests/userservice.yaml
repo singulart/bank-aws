@@ -84,6 +84,8 @@ spec:
                   fieldPath: metadata.name
             - name: SERVICE_NAME
               value: userservice
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.name=userservice-app
           envFrom:
             - configMapRef:
                 name: environment-config

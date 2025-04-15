@@ -80,6 +80,8 @@ spec:
                   fieldPath: metadata.name
             - name: SERVICE_NAME
               value: contacts
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.name=contacts-app
           envFrom:
             - configMapRef:
                 name: environment-config

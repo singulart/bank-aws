@@ -24,7 +24,7 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 80
+      port: 8080
       targetPort: 8080
   selector:
     app: frontend
@@ -32,7 +32,7 @@ spec:
     environment: development
     team: frontend
     tier: web
-  type: LoadBalancer
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -119,7 +119,7 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 15
             timeoutSeconds: 30
-          name: front
+          name: frontend
           readinessProbe:
             httpGet:
               path: /ready

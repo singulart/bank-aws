@@ -1,0 +1,36 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: frontend-gateway
+  namespace: bank-aws
+spec:
+  selector:
+    istio: ingressgateway # must match the ingress gateway’s label
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - bank-aws.argorand.io
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: frontend
+  namespace: bank-aws
+spec:
+  hosts:
+  - bank-aws.argorand.io
+  gateways:
+  - frontend-gateway     # name of Gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: frontend.bank-aws.svc.cluster.local
+        port:
+          number: 8080
+
